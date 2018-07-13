@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Albot</name>
+    </assembly>
+    <members>
+        <member name="T:Albot.AlbotConnection">
+            <summary>
+            Handles connection and transporting data between client and bot.
+            </summary>
+        </member>
+        <member name="M:Albot.AlbotConnection.#ctor(System.String,System.Int32)">
+            <summary>
+            Creates and handles the TCP connection with the client.
+            </summary>
+        </member>
+        <member name="M:Albot.AlbotConnection.ReceiveState">
+            <summary>
+            Blocking receive call for new state as raw string.
+            </summary>
+        </member>
+        <member name="M:Albot.AlbotConnection.SendCommand(System.String)">
+            <summary>
+            Sends the string to the client as a raw string.
+            </summary>
+        </member>
+        <member name="M:Albot.AlbotConnection.SendCommandReceiveState(System.String)">
+            <summary>
+            Sends command and then does a blocking receive for a response.
+            </summary>
+        </member>
+        <member name="M:Albot.AlbotConnection.RestartGame">
+            <summary>
+            Sends a command to restart the game.
+            </summary>
+        </member>
+        <member name="M:Albot.AlbotConnection.GameOver">
+            <summary>
+            Returns true if game is over, make sure to check this after receiving the state.
+            </summary>
+        </member>
+        <member name="M:Albot.AlbotConnection.GetWinner">
+            <summary>
+            Returns winner, 1 if you won, -1 if you lost, 0 if draw. Call this after GameOver() is true.
+            </summary>
+        </member>
+        <member name="T:Albot.Connect4.Connect4Game">
+            <summary>
+            A high level Connect4 library which sets up the connection and provides basic logic.
+            </summary>
+        </member>
+        <member name="M:Albot.Connect4.Connect4Game.MakeMoveGetNextBoard(System.Int32)">
+            <summary>
+            Makes a move, then returns the next board. 
+            </summary>
+        </member>
+        <member name="M:Albot.Connect4.Connect4Game.GetNextBoard">
+            <summary>
+            Returns the next board.
+            </summary>
+        </member>
+        <member name="M:Albot.Connect4.Connect4Game.SimulateMove(Albot.Connect4.Connect4Board,System.Int32,System.Int32)">
+            <summary>
+            Returns a board in which the given move has been applied by the given player.
+            </summary>
+        </member>
+        <member name="M:Albot.Connect4.Connect4Game.PlayGame(System.Func{Albot.Connect4.Connect4Board,System.Int32},System.Boolean)">
+            <summary>
+            Plays an entire game by making moves returned by the function provided. 
+            </summary>
+        </member>
+        <member name="T:Albot.BoardState">
+            <summary>
+            Whether game is over and if so, who the winner is.
+            </summary>
+        </member>
+        <member name="M:Albot.GridBased.GridBasedGame.MakeMove(System.Int32)">
+            <summary>
+            Makes the move given.
+            </summary>
+        </member>
+        <member name="M:Albot.GridBased.GridBasedGame.GetPossibleMoves(Albot.GridBased.GridBoard)">
+            <summary>
+            Returns a list of legal moves according to the board given.
+            </summary>
+        </member>
+        <member name="M:Albot.GridBased.GridBasedGame.SimulateMove(Albot.GridBased.GridBoard,System.Int32,System.Int32)">
+            <summary>
+            Returns a board in which the given move has been played by the given player.
+            </summary>
+            <param name="board">Board which the move should be applied to</param>
+            <param name="player">Player to make the move</param>
+            <param name="move">Move to be played</param>
+            <returns></returns>
+        </member>
+        <member name="M:Albot.GridBased.GridBasedGame.EvaluateBoard(Albot.GridBased.GridBoard)">
+            <summary>
+            Returns the state of the board. (PlayerWon|EnemyWon|Draw|Ongoing)
+            </summary>
+        </member>
+        <member name="M:Albot.Snake.SnakeBoard.CellBlocked(System.Int32,System.Int32)">
+            <summary>
+            True if position is occupied, false if square is empty.
+            </summary>
+        </member>
+        <member name="M:Albot.Snake.SnakeBoard.GetBlockedList(System.Boolean)">
+            <summary>
+            Returns a list of occupied positions.
+            </summary>
+        </member>
+        <member name="T:Albot.Snake.SnakeGame">
+            <summary>
+            A high level Snake library which sets up the connection and provides basic logic.
+            </summary>
+        </member>
+        <member name="M:Albot.Snake.SnakeGame.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes library and connects to the client.
+            </summary>
+        </member>
+        <member name="M:Albot.Snake.SnakeGame.GetNextBoard">
+            <summary>
+            Blocking receive call for next board. 
+            </summary>
+        </member>
+        <member name="M:Albot.Snake.SnakeGame.MakeMove(System.String)">
+            <summary>
+            Make your move, sets the direction of your snake.
+            </summary>
+        </member>
+        <member name="M:Albot.Snake.SnakeGame.GetPossibleMoves(Albot.Snake.SnakeBoard)">
+            <summary>
+            Returns the possible moves for both the player and the enemy, based off directions only. 
+            </summary>
+        </member>
+        <member name="M:Albot.Snake.SnakeGame.SimulatePlayerMove(Albot.Snake.SnakeBoard,System.String)">
+            <summary>
+            Simulate a move where only the player moves.
+            </summary>
+            <param name="board">The board which the move is applied to.</param>
+            <param name="move">The direction in which you want to simulate a move.</param>
+            <returns>The board where the move has been applied.</returns>
+        </member>
+        <member name="M:Albot.Snake.SnakeGame.SimulateEnemyMove(Albot.Snake.SnakeBoard,System.String)">
+            <summary>
+            Simulate a move where only the enemy moves.
+            </summary>
+            <param name="board">The board which the move is applied to.</param>
+            <param name="move">The direction in which you want to simulate a move.</param>
+            <returns>The board where the move has been applied.</returns>
+        </member>
+        <member name="M:Albot.Snake.SnakeGame.SimulateMoves(Albot.Snake.SnakeBoard,System.String,System.String)">
+            <summary>
+            Returns a board where the moves have been applied.
+            </summary>
+        </member>
+        <member name="M:Albot.Snake.SnakeGame.EvaluateBoard(Albot.Snake.SnakeBoard)">
+            <summary>
+            Returns the state of the board. 
+            </summary>
+        </member>
+        <member name="M:Albot.Snake.SnakeGame.PlayGame(System.Func{Albot.Snake.SnakeBoard,System.String},System.Boolean)">
+            <summary>
+            Plays an entire game by making moves returned by the function provided. 
+            </summary>
+        </member>
+    </members>
+</doc>
