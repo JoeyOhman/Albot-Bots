@@ -13,16 +13,22 @@ namespace JoeyConnect4 {
         private static Random rand = new Random();
         private static Connect4Game connect4;
         private static int maxDepth;
+        private const int MAXIMIZING = 1, MINIMIZING = -1;
 
         // Calls minimax for each possible move and returns best move
         public static int FindBestMove(Connect4Game connect4, Connect4Board startBoard, int maxDepth) {
             Search.maxDepth = maxDepth;
             Search.connect4 = connect4;
-            int player = 1;
+            int player = MAXIMIZING;
+            int a = int.MinValue;
+            int b = int.MaxValue;
+
+
             List<Result> results = new List<Result>();
             foreach (int move in connect4.GetPossibleMoves(startBoard)) {
                 Connect4Board nextBoard = connect4.SimulateMove(startBoard, player, move);
-                int searchScore = MinMaxSearch(nextBoard, player * -1, 1);
+                int searchScore = MinMaxSearch(nextBoard, player * -1, 1, a, b);
+                a = Math.Max(a, searchScore);
 
                 results.Add(new Search.Result() { move = move, score = searchScore });
             }
@@ -32,7 +38,7 @@ namespace JoeyConnect4 {
         }
 
         // Returns best score found for current player
-        private static int MinMaxSearch(Connect4Board currentBoard, int player, int depth) {
+        private static int MinMaxSearch(Connect4Board currentBoard, int player, int depth, int a, int b) {
 
             BoardState boardState = connect4.EvaluateBoard(currentBoard);
             // End game if max depth reached or game is over
@@ -40,29 +46,41 @@ namespace JoeyConnect4 {
                 return BoardStateToScore(boardState, depth);
             }
 
-            List<Result> results = new List<Result>();
+            int searchScore = player == MAXIMIZING ? int.MinValue : int.MaxValue;
+
             foreach (int move in connect4.GetPossibleMoves(currentBoard)) {
                 Connect4Board nextBoard = connect4.SimulateMove(currentBoard, player, move);
-                int searchScore = MinMaxSearch(nextBoard, player * -1, depth + 1);
-
-                results.Add(new Search.Result() { move = move, score = searchScore });
+                
+                if (player == MAXIMIZING) {
+                    searchScore = Math.Max(searchScore, MinMaxSearch(nextBoard, MINIMIZING, depth + 1, a, b));
+                    a = Math.Max(a, searchScore);
+                    if (a >= b) // Minimizing parent will not choose this path
+                        break;
+                } else {
+                    searchScore = Math.Min(searchScore, MinMaxSearch(nextBoard, MAXIMIZING, depth + 1, a, b));
+                    b = Math.Min(b, searchScore);
+                    if (b <= a) // Maximizing parent will not choose this path
+                        break;
+                }
             }
-
-            results = results.OrderBy(res => res.score).ToList();
-
-            if (player == 1)
-                return results[results.Count - 1].score;
-            return results[0].score;
-
+            return searchScore;
 
         }
 
+        // Not sure if correct
+        private static int BoardStateToScore(BoardState boardState, int depth) {
+            depth = 0;
+            if (boardState == BoardState.PlayerWon)
+                return 10 - depth; // Win asap (or delay lose as much as possible)
+            if (boardState == BoardState.EnemyWon)
+                return -10 + depth;
+            if (boardState == BoardState.Draw)
+                return 0;
+            else //(boardState == BoardState.Ongoing)
+                return 0; // Evaluate smarter (TODO)
+        }
 
         private static int DecideMove(List<Result> results) {
-            /*if(results.Any(x => x.score == 0)) { // PLAY FOR TIE (DEBUG)
-                List<Result> possibleMoves = results.Where(res => res.score == 0).ToList();
-                return possibleMoves[rand.Next(0, possibleMoves.Count - 1)].move;
-            }*/
 
             for (int i = 10; i >= -10; i--) {
                 if (!results.Any(res => res.score == i))
@@ -78,24 +96,6 @@ namespace JoeyConnect4 {
         private struct Result {
             public int move;
             public int score;
-        }
-
-        // Not sure if correct
-        private static int BoardStateToScore(BoardState boardState, int depth) {
-            if (boardState == BoardState.PlayerWon)
-                return 10 - depth; // Win asap (or delay lose as much as possible)
-            if (boardState == BoardState.EnemyWon)
-                return -10 + depth;
-            if (boardState == BoardState.Draw)
-                return 0;
-            else //(boardState == BoardState.Ongoing)
-                return 0; // Evaluate smarter (TODO)
-                          /*
-                          if (boardState == BoardState.EnemyWon && player == 1)
-                              return -10 + depth; // Delay lose as much as possible
-                          if (boardState == BoardState.PlayerWon && player == -1)
-                              return 10 - depth;
-                              */
         }
 
     }
