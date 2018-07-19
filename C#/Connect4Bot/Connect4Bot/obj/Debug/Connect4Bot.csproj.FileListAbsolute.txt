@@ -217,3 +217,8 @@ C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\C#\Connect4Bot\Connect4Bot\ob
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\C#\Connect4Bot\Connect4Bot\obj\Debug\Connect4Bot.exe
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\C#\Connect4Bot\Connect4Bot\obj\Debug\Connect4Bot.pdb
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\C#\Connect4Bot\Connect4Bot\bin\Debug\Albot.pdb
+C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\obj\Debug\Connect4Bot.csprojResolveAssemblyReference.cache
+C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\obj\Debug\Connect4Bot.exe.config
+C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\obj\Debug\Connect4Bot.csproj.CoreCompileInputs.cache
+C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\obj\Debug\Connect4Bot.exe
+C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\obj\Debug\Connect4Bot.pdb

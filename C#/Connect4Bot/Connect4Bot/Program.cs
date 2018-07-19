@@ -6,7 +6,7 @@ using System.IO;
 
 using Albot.Connect4;
 
-namespace JoeyConnect4 {
+namespace Connect4Bot {
 
     class MainClass {
 

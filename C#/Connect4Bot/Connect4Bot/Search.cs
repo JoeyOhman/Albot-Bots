@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Albot;
 using Albot.Connect4;
 
-namespace JoeyConnect4 {
+namespace Connect4Bot {
     public class Search {
 
         private static Random rand = new Random();
@@ -24,13 +24,13 @@ namespace JoeyConnect4 {
             int b = int.MaxValue;
 
 
-            List<Result> results = new List<Result>();
+            List<MoveScore> results = new List<MoveScore>();
             foreach (int move in connect4.GetPossibleMoves(startBoard)) {
                 Connect4Board nextBoard = connect4.SimulateMove(startBoard, player, move);
                 int searchScore = MinMaxSearch(nextBoard, player * -1, 1, a, b);
                 a = Math.Max(a, searchScore);
 
-                results.Add(new Search.Result() { move = move, score = searchScore });
+                results.Add(new Search.MoveScore() { move = move, score = searchScore });
             }
 
             return DecideMove(results);
@@ -43,7 +43,7 @@ namespace JoeyConnect4 {
             BoardState boardState = connect4.EvaluateBoard(currentBoard);
             // End game if max depth reached or game is over
             if (depth == maxDepth || boardState != BoardState.Ongoing) {
-                return BoardStateToScore(boardState, depth);
+                return Evaluate.EvaluateBoard(boardState, currentBoard, depth);
             }
 
             int searchScore = player == MAXIMIZING ? int.MinValue : int.MaxValue;
@@ -54,46 +54,33 @@ namespace JoeyConnect4 {
                 if (player == MAXIMIZING) {
                     searchScore = Math.Max(searchScore, MinMaxSearch(nextBoard, MINIMIZING, depth + 1, a, b));
                     a = Math.Max(a, searchScore);
-                    if (a >= b) // Minimizing parent will not choose this path
+                    if (a >= b) // Minimizing parent will not choose this path, beta cutoff
                         break;
                 } else {
                     searchScore = Math.Min(searchScore, MinMaxSearch(nextBoard, MAXIMIZING, depth + 1, a, b));
                     b = Math.Min(b, searchScore);
-                    if (b <= a) // Maximizing parent will not choose this path
+                    if (b <= a) // Maximizing parent will not choose this path, alpha cutoff
                         break;
                 }
             }
             return searchScore;
 
         }
-
-        // Not sure if correct
-        private static int BoardStateToScore(BoardState boardState, int depth) {
-            depth = 0;
-            if (boardState == BoardState.PlayerWon)
-                return 10 - depth; // Win asap (or delay lose as much as possible)
-            if (boardState == BoardState.EnemyWon)
-                return -10 + depth;
-            if (boardState == BoardState.Draw)
-                return 0;
-            else //(boardState == BoardState.Ongoing)
-                return 0; // Evaluate smarter (TODO)
-        }
-
-        private static int DecideMove(List<Result> results) {
+        
+        private static int DecideMove(List<MoveScore> results) {
 
             for (int i = 10; i >= -10; i--) {
                 if (!results.Any(res => res.score == i))
                     continue;
 
-                List<Result> possibleMoves = results.Where(res => res.score == i).ToList();
+                List<MoveScore> possibleMoves = results.Where(res => res.score == i).ToList();
                 return possibleMoves[rand.Next(0, possibleMoves.Count - 1)].move;
             }
             Console.WriteLine("Should not happen.");
             return -1; // Should not happen
         }
 
-        private struct Result {
+        private struct MoveScore {
             public int move;
             public int score;
         }
