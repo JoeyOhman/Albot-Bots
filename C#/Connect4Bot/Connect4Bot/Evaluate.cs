@@ -12,7 +12,7 @@ using static Albot.Connect4.Connect4Constants.Fields;
 namespace Connect4Bot {
 
     public class Evaluate {
-        const int winScore = 1000, twoInRowScore = 1, threeInRowScore = 3;
+        public const int winScore = 1000, twoInRowScore = 1, threeInRowScore = 3;
 
         // Not sure if correct
         internal static int EvaluateBoard(BoardState boardState, Connect4Board board, int depth) {

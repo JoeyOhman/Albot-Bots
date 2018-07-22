@@ -10,13 +10,13 @@ namespace Connect4Bot {
 
     class MainClass {
 
-        const int depth = 7;
+        const int depth = 6;
         static Connect4Game connect4;// = new Connect4Game();
 
         public static void Main(string[] args) {
             connect4 = new Connect4Game();
             
-            connect4.PlayGame(DecideMove, false);
+            connect4.PlayGame(DecideMove, true);
         }
 
         static int DecideMove(Connect4Board board) {

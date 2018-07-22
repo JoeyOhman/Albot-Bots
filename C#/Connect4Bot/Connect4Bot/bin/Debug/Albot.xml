@@ -98,6 +98,14 @@
             Returns the state of the board. (PlayerWon|EnemyWon|Draw|Ongoing)
             </summary>
         </member>
+        <member name="M:Albot.GridBased.GridBoard.GetCell(System.Int32,System.Int32)">
+            <summary>
+            Gives the value of a cell. (0,0) is in the top left corner.
+            </summary>
+            <param name="x">Zero based x index</param>
+            <param name="y">Zero based y index</param>
+            <returns>1 if player, -1 if enemy, 0 if empty</returns>
+        </member>
         <member name="M:Albot.Snake.SnakeBoard.CellBlocked(System.Int32,System.Int32)">
             <summary>
             True if position is occupied, false if square is empty.

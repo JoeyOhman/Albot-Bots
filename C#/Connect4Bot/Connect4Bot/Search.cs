@@ -25,13 +25,16 @@ namespace Connect4Bot {
 
 
             List<MoveScore> results = new List<MoveScore>();
+            Console.Write("SearchScores: ");
             foreach (int move in connect4.GetPossibleMoves(startBoard)) {
                 Connect4Board nextBoard = connect4.SimulateMove(startBoard, player, move);
                 int searchScore = MinMaxSearch(nextBoard, player * -1, 1, a, b);
                 a = Math.Max(a, searchScore);
 
                 results.Add(new Search.MoveScore() { move = move, score = searchScore });
+                Console.Write(searchScore + " ");
             }
+            Console.WriteLine();
 
             return DecideMove(results);
 
@@ -54,13 +57,17 @@ namespace Connect4Bot {
                 if (player == MAXIMIZING) {
                     searchScore = Math.Max(searchScore, MinMaxSearch(nextBoard, MINIMIZING, depth + 1, a, b));
                     a = Math.Max(a, searchScore);
+                    
                     if (a >= b) // Minimizing parent will not choose this path, beta cutoff
                         break;
+                        
                 } else {
                     searchScore = Math.Min(searchScore, MinMaxSearch(nextBoard, MAXIMIZING, depth + 1, a, b));
                     b = Math.Min(b, searchScore);
+                    
                     if (b <= a) // Maximizing parent will not choose this path, alpha cutoff
                         break;
+                        
                 }
             }
             return searchScore;
@@ -69,12 +76,13 @@ namespace Connect4Bot {
         
         private static int DecideMove(List<MoveScore> results) {
 
-            for (int i = 10; i >= -10; i--) {
+            for (int i = Evaluate.winScore; i >= -Evaluate.winScore; i--) {
                 if (!results.Any(res => res.score == i))
                     continue;
 
                 List<MoveScore> possibleMoves = results.Where(res => res.score == i).ToList();
                 return possibleMoves[rand.Next(0, possibleMoves.Count - 1)].move;
+                //return possibleMoves[0].move;
             }
             Console.WriteLine("Should not happen.");
             return -1; // Should not happen
