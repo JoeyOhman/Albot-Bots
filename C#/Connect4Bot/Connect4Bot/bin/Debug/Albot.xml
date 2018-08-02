@@ -167,6 +167,11 @@
             Returns the state of the board. 
             </summary>
         </member>
+        <member name="M:Albot.Snake.SnakeGame.RestartGame">
+            <summary>
+            Sends a command to restart the game.
+            </summary>
+        </member>
         <member name="M:Albot.Snake.SnakeGame.PlayGame(System.Func{Albot.Snake.SnakeBoard,System.String},System.Boolean)">
             <summary>
             Plays an entire game by making moves returned by the function provided. 

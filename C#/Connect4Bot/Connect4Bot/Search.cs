@@ -25,16 +25,16 @@ namespace Connect4Bot {
 
 
             List<MoveScore> results = new List<MoveScore>();
-            Console.Write("SearchScores: ");
+            //Console.Write("SearchScores: ");
             foreach (int move in connect4.GetPossibleMoves(startBoard)) {
                 Connect4Board nextBoard = connect4.SimulateMove(startBoard, player, move);
                 int searchScore = MinMaxSearch(nextBoard, player * -1, 1, a, b);
-                a = Math.Max(a, searchScore);
+                //a = Math.Max(a, searchScore);
 
                 results.Add(new Search.MoveScore() { move = move, score = searchScore });
-                Console.Write(searchScore + " ");
+                //Console.Write(searchScore + " ");
             }
-            Console.WriteLine();
+            //Console.WriteLine();
 
             return DecideMove(results);
 

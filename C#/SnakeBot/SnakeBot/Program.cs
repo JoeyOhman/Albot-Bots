@@ -13,7 +13,7 @@ namespace SnakeBot {
 
         static SnakeGame snake;
         static Random rand = new Random();
-        static int maxDepth = 10;
+        static int maxDepth = 1;
         static int nodeCount = 0;
 
         const int WIDTH = SnakeConstants.Fields.boardWidth;
