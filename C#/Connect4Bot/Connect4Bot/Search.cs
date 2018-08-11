@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Albot;
-using Albot.Connect4;
+using Albot.GridBased.Connect4;
 
 namespace Connect4Bot {
     public class Search {

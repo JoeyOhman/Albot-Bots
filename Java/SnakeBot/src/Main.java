@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         snake = new SnakeGame();
 
-        snake.playGame((Main::decideMove), false);
+        snake.playGame((Main::decideMove), true);
     }
 
     static String decideMove(SnakeBoard board) {

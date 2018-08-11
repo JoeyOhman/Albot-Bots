@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Albot;
-using Albot.Connect4;
+using Albot.GridBased.Connect4;
 
-using static Albot.Connect4.Connect4Constants.Fields;
+using static Albot.GridBased.Connect4.Connect4Constants.Fields;
 
 namespace Connect4Bot {
 

@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.IO;
 
-using Albot.Connect4;
+using Albot.GridBased.Connect4;
 
 namespace Connect4Bot {
 
@@ -16,8 +16,9 @@ namespace Connect4Bot {
         public static void Main(string[] args) {
             connect4 = new Connect4Game();
 
-            //connect4.PlayGame(DecideMove, true);
-            Play(DecideMove);
+            connect4.PlayGame(DecideMove, false);
+            //Play(DecideMove);
+            System.Environment.Exit(1);
         }
 
         static int DecideMove(Connect4Board board) {
