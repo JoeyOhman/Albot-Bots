@@ -11,18 +11,20 @@ using Albot;
 namespace SnakeBot {
     class Program {
 
-        static SnakeGame snake;
+        static SnakeGame game;
         static Random rand = new Random();
-        static int maxDepth = 1;
+        static int maxDepth = 8;
         static int nodeCount = 0;
 
         const int WIDTH = SnakeConstants.Fields.boardWidth;
         const int HEIGHT = SnakeConstants.Fields.boardHeight;
 
+        
+
         static void Main(string[] args) {
-            snake = new SnakeGame();
+            game = new SnakeGame();
             
-            snake.PlayGame(DecideDirection, true);
+            game.PlayGame(DecideDirection, false);
 
             System.Environment.Exit(1);
         }
@@ -30,7 +32,7 @@ namespace SnakeBot {
         static string DecideDirection(SnakeBoard board) {
 
             //List<MoveScore> movesFreeDeg = CalcMoveFreeDegs(board);
-            return BestDFSMove(board, snake.GetPossibleMoves(board).playerMoves);
+            return BestDFSMove(board, game.GetPossibleMoves(board).playerMoves);
 
             /*
             for (int i = 4; i >= 1; i--) {
@@ -48,9 +50,9 @@ namespace SnakeBot {
             moves = moves.OrderByDescending(x => NextSquareDistanceFromEnemy(
                 board.GetPlayerPosition(), board.GetEnemyPosition(), x, board.GetEnemyDirection())).ToList();
 
-            MoveScore bestMove = new MoveScore(moves[0], DFSScore(snake.SimulatePlayerMove(board, moves[0])));
+            MoveScore bestMove = new MoveScore(moves[0], DFSScore(game.SimulatePlayerMove(board, moves[0])));
             for (int i = 1; i < moves.Count; i++) {
-                int score = DFSScore(snake.SimulatePlayerMove(board, moves[i]));
+                int score = DFSScore(game.SimulatePlayerMove(board, moves[i]));
                 if (score > bestMove.score) {
                     bestMove.dir = moves[i];
                     bestMove.score = score;
@@ -68,14 +70,14 @@ namespace SnakeBot {
         }
         static int DFSScore(SnakeBoard currentBoard, int depth) {
             nodeCount++;
-            BoardState currentState = snake.EvaluateBoard(currentBoard);
-            if (depth == maxDepth || currentState != BoardState.Ongoing)
+            BoardState currentState = game.EvaluateBoard(currentBoard);
+            if (depth == maxDepth || currentState != BoardState.ongoing)
                 return depth;
 
             List<MoveScore> moveScores = new List<MoveScore>();
-            foreach (string move in snake.GetPossibleMoves(currentBoard).playerMoves) { 
+            foreach (string move in game.GetPossibleMoves(currentBoard).playerMoves) { 
 
-                SnakeBoard simBoard = snake.SimulatePlayerMove(currentBoard, move);
+                SnakeBoard simBoard = game.SimulatePlayerMove(currentBoard, move);
                 int score = DFSScore(simBoard, depth+1);
                 if (score == maxDepth)
                     return score;
@@ -85,7 +87,7 @@ namespace SnakeBot {
         }
 
         static List<MoveScore> CalcMoveFreeDegs(SnakeBoard board) {
-            PossibleMoves possMoves = snake.GetPossibleMoves(board);
+            PossibleMoves possMoves = game.GetPossibleMoves(board);
             List<MoveScore> moves = new List<MoveScore>(3);
             foreach (string direction in possMoves.playerMoves) {
                 moves.Add(new MoveScore() { dir = direction, score = DegreesOfFreedom(board, direction) });

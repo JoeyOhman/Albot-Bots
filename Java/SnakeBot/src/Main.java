@@ -23,7 +23,7 @@ public class Main {
         for(String move : moves) {
             SnakeBoard simBoard = snake.simulatePlayerMove(board, move);
             BoardState bs = snake.evaluateBoard(simBoard);
-            if(bs == BoardState.Ongoing) {
+            if(bs == BoardState.ongoing) {
                 return move;
             }
         }

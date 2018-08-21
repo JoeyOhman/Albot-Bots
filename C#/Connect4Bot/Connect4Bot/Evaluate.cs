@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Albot;
-using Albot.GridBased.Connect4;
+using Albot.Connect4;
 
-using static Albot.GridBased.Connect4.Connect4Constants.Fields;
+using static Albot.Connect4.Connect4Constants.Fields;
 
 namespace Connect4Bot {
 
@@ -18,11 +18,11 @@ namespace Connect4Bot {
         internal static int EvaluateBoard(BoardState boardState, Connect4Board board, int depth) {
             depth = 0;
             int score;
-            if (boardState == BoardState.PlayerWon)
+            if (boardState == BoardState.playerWon)
                 score = winScore - depth; // Win asap (or delay lose as much as possible)
-            else if (boardState == BoardState.EnemyWon)
+            else if (boardState == BoardState.enemyWon)
                 score = -winScore + depth;
-            else if (boardState == BoardState.Draw)
+            else if (boardState == BoardState.draw)
                 score = 0;
             else //(boardState == BoardState.Ongoing)
                 score = 0;
@@ -34,16 +34,16 @@ namespace Connect4Bot {
         
         private static Evaluation CalculateBoardScore(Connect4Board board) {
             int score = 0;
-            BoardState bs = BoardState.Ongoing;
+            BoardState bs = BoardState.ongoing;
             score += CalulateRowScores(board, ref bs);
             score += CalculateColumnScores(board, ref bs);
             score += CalculateDiagonalScores(board, ref bs);
-            if (bs == BoardState.PlayerWon)
+            if (bs == BoardState.playerWon)
                 score = winScore;
-            else if (bs == BoardState.EnemyWon)
+            else if (bs == BoardState.enemyWon)
                 score = -winScore;
             else if (IsDraw(board)) {
-                bs = BoardState.Draw;
+                bs = BoardState.draw;
                 score = 0;
             }
             return new Evaluation() { bs = bs, score = score };
@@ -128,9 +128,9 @@ namespace Connect4Bot {
                 int seqOfFourScore = CalculateSeqOfFourScore(seq.GetRange(i, 4));
                 
                 if (seqOfFourScore == winScore)
-                    bs = BoardState.PlayerWon;
+                    bs = BoardState.playerWon;
                 else if(seqOfFourScore == -winScore)
-                    bs = BoardState.EnemyWon;
+                    bs = BoardState.enemyWon;
                 
                 score += seqOfFourScore;
             }

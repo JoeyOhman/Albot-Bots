@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Albot;
-using Albot.GridBased.Connect4;
+using Albot.Connect4;
 
 namespace Connect4Bot {
     public class Search {
@@ -45,7 +45,7 @@ namespace Connect4Bot {
 
             BoardState boardState = connect4.EvaluateBoard(currentBoard);
             // End game if max depth reached or game is over
-            if (depth == maxDepth || boardState != BoardState.Ongoing) {
+            if (depth == maxDepth || boardState != BoardState.ongoing) {
                 return Evaluate.EvaluateBoard(boardState, currentBoard, depth);
             }
 

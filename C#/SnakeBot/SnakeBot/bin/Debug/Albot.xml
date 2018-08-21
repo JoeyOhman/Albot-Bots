@@ -44,34 +44,34 @@
             Returns winner, 1 if you won, -1 if you lost, 0 if draw. Call this after GameOver() is true.
             </summary>
         </member>
-        <member name="T:Albot.Connect4.Connect4Game">
+        <member name="T:Albot.BoardState">
+            <summary>
+            Whether game is over and if so, who the winner is.
+            </summary>
+        </member>
+        <member name="T:Albot.GridBased.Connect4.Connect4Game">
             <summary>
             A high level Connect4 library which sets up the connection and provides basic logic.
             </summary>
         </member>
-        <member name="M:Albot.Connect4.Connect4Game.MakeMoveGetNextBoard(System.Int32)">
+        <member name="M:Albot.GridBased.Connect4.Connect4Game.MakeMoveGetNextBoard(System.Int32)">
             <summary>
             Makes a move, then returns the next board. 
             </summary>
         </member>
-        <member name="M:Albot.Connect4.Connect4Game.GetNextBoard">
+        <member name="M:Albot.GridBased.Connect4.Connect4Game.GetNextBoard">
             <summary>
             Returns the next board.
             </summary>
         </member>
-        <member name="M:Albot.Connect4.Connect4Game.SimulateMove(Albot.Connect4.Connect4Board,System.Int32,System.Int32)">
+        <member name="M:Albot.GridBased.Connect4.Connect4Game.SimulateMove(Albot.GridBased.Connect4.Connect4Board,System.Int32,System.Int32)">
             <summary>
             Returns a board in which the given move has been applied by the given player.
             </summary>
         </member>
-        <member name="M:Albot.Connect4.Connect4Game.PlayGame(System.Func{Albot.Connect4.Connect4Board,System.Int32},System.Boolean)">
+        <member name="M:Albot.GridBased.Connect4.Connect4Game.PlayGame(System.Func{Albot.GridBased.Connect4.Connect4Board,System.Int32},System.Boolean)">
             <summary>
             Plays an entire game by making moves returned by the function provided. 
-            </summary>
-        </member>
-        <member name="T:Albot.BoardState">
-            <summary>
-            Whether game is over and if so, who the winner is.
             </summary>
         </member>
         <member name="M:Albot.GridBased.GridBasedGame.MakeMove(System.Int32)">
