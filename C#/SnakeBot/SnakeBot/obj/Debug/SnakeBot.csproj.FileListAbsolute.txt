@@ -428,7 +428,6 @@ C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\SnakeBot\SnakeB
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\SnakeBot\SnakeBot\bin\Debug\System.Xml.XPath.XDocument.dll
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\SnakeBot\SnakeBot\bin\Debug\Albot.dll
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\SnakeBot\SnakeBot\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\SnakeBot\SnakeBot\bin\Debug\Albot.pdb
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\SnakeBot\SnakeBot\bin\Debug\Albot.xml
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\SnakeBot\SnakeBot\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\SnakeBot\SnakeBot\obj\Debug\SnakeBot.csprojResolveAssemblyReference.cache

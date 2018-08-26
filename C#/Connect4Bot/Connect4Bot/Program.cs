@@ -15,18 +15,18 @@ namespace Connect4Bot {
 
         public static void Main(string[] args) {
 
-            connect4.PlayGame(RandomMove, false);
+            connect4.PlayGame(RandomMove, true);
         }
 
         static int RandomMove(Connect4Board currentBoard) {
-            //currentBoard.PrintBoard("My current board");
+            currentBoard.PrintBoard("My current board");
             List<int> possibleMoves = connect4.GetPossibleMoves(currentBoard); // Get the possible moves in the board
 
             int randomIndex = rnd.Next(0, possibleMoves.Count);
             int randomMove = possibleMoves[randomIndex];
 
             Connect4Board simBoard = connect4.SimulateMove(currentBoard, 1, randomMove);
-            //simBoard.PrintBoard("My simulated board");
+            simBoard.PrintBoard("My simulated board");
 
             BoardState bs = connect4.EvaluateBoard(simBoard);
             //Console.WriteLine(bs);

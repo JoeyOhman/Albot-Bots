@@ -426,7 +426,6 @@ C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Con
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\bin\Debug\System.Xml.XmlSerializer.dll
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\bin\Debug\System.Xml.XPath.dll
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\bin\Debug\System.Xml.XPath.XDocument.dll
-C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\bin\Debug\Albot.pdb
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\bin\Debug\Albot.xml
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\obj\Debug\Connect4Bot.exe.config

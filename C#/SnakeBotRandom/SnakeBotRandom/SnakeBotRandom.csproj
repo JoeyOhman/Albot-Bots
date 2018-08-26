@@ -34,7 +34,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Albot, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Albot, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Libraries\Albot-CSharp-Library\Albot\bin\Release\netstandard2.0\Albot.dll</HintPath>
     </Reference>

@@ -24,7 +24,7 @@ namespace SnakeBot {
         static void Main(string[] args) {
             game = new SnakeGame();
             
-            game.PlayGame(DecideDirection, false);
+            game.PlayGame(DecideDirection, true);
 
             System.Environment.Exit(1);
         }
