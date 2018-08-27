@@ -10,7 +10,8 @@ namespace SnakeBotRandom {
 
         static void Main(string[] args) {
             
-            game.PlayGame(DecideMove, false);
+            game.PlayGame(DecideMove, true);
+            //Console.WriteLine("HEHEH");
             
         }
 
@@ -22,6 +23,11 @@ namespace SnakeBotRandom {
 
             int randomIndex = rnd.Next(possibleMoves.Count);
             string randomMove = possibleMoves[randomIndex];
+
+            SnakeBoard simBoard = game.SimulatePlayerMove(board, randomMove);
+            board.PrintBoard("My simulated board");
+
+            Console.WriteLine(game.EvaluateBoard(simBoard));
 
             return randomMove;
         }

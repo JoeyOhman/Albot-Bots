@@ -10,11 +10,11 @@ public class Main {
     public static void main(String[] args) {
         connect4 = new Connect4Game();
 
-        connect4.playGame((Main::decideMove), false);
+        connect4.playGame((Main::decideMove), true);
     }
 
     public static int decideMove(Connect4Board board) {
-        //board.printBoard("My current board");
+        board.printBoard("My current board");
         List<Integer> possibleMoves = connect4.getPossibleMoves(board);
 
         /*for(int move : possMoves) {
@@ -32,10 +32,10 @@ public class Main {
         int randomMove = possibleMoves.get(randomIndex);
 
         Connect4Board simBoard = connect4.simulateMove(board, 1, randomMove);
-        //simBoard.printBoard("My simulated board");
+        simBoard.printBoard("My simulated board");
 
         BoardState bs = connect4.evaluateBoard(simBoard);
-        //System.out.println(bs);
+        System.out.println(bs);
 
         return randomMove;
     }
