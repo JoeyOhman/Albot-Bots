@@ -10,7 +10,12 @@ public class Main {
     public static void main(String[] args) {
         connect4 = new Connect4Game();
 
-        connect4.playGame((Main::decideMove), true);
+        //connect4.playGame((Main::decideMove), true);
+
+        while(connect4.awaitNextGameState() == BoardState.ongoing) {
+            int move = decideMove(connect4.currentBoard);
+            connect4.makeMove(move);
+        }
     }
 
     public static int decideMove(Connect4Board board) {

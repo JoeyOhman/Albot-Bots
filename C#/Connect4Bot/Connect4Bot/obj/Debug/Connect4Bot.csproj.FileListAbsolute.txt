@@ -436,3 +436,4 @@ C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Con
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\bin\Debug\Connect4Bot.exe.config
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\bin\Debug\Connect4Bot.pdb
 C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\obj\Debug\Connect4Bot.csproj.CopyComplete
+C:\Users\Joeyeyey\Documents\Programming\Albot\Bots\Albot-Bots\C#\Connect4Bot\Connect4Bot\bin\Debug\Albot.pdb

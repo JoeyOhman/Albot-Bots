@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Albot.Snake;
+using Albot;
 
 namespace SnakeBotRandom {
     class Program {
@@ -11,8 +12,12 @@ namespace SnakeBotRandom {
         static void Main(string[] args) {
             
             game.PlayGame(DecideMove, true);
-            //Console.WriteLine("HEHEH");
-            
+            /*
+            while(game.AwaitNextGameState() == BoardState.ongoing) {
+                string move = DecideMove(game.currentBoard);
+                game.MakeMove(move);
+            }
+            */
         }
 
         static string DecideMove(SnakeBoard board) {
@@ -25,7 +30,7 @@ namespace SnakeBotRandom {
             string randomMove = possibleMoves[randomIndex];
 
             SnakeBoard simBoard = game.SimulatePlayerMove(board, randomMove);
-            board.PrintBoard("My simulated board");
+            simBoard.PrintBoard("My simulated board");
 
             Console.WriteLine(game.EvaluateBoard(simBoard));
 
