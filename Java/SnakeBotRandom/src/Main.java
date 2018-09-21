@@ -51,15 +51,20 @@ public class Main {
         String randomMove = possibleMoves.get(randomIndex);
 
         SnakeBoard simBoard = game.simulatePlayerMove(board, randomMove);
+        simBoard.printBoard("My simulated board:");
+        simBoard = game.simulateEnemyMove(board, randomMove);
+        simBoard.printBoard("Enemy move board:");
+        simBoard = game.simulateMoves(board, randomMove, randomMove);
+        simBoard.printBoard("Both moves simmed:");
+        /*
         for(int i = 0; i < 1000000; i++) {
             while (game.evaluateBoard(simBoard) == BoardState.ongoing)
                 simBoard = game.simulatePlayerMove(simBoard, randomMove);
             simBoard = new SnakeBoard(board);
         }
+        */
 
-        //simBoard.printBoard("My simulated board");
-
-        //System.out.println(game.evaluateBoard(simBoard));
+        System.out.println(game.evaluateBoard(simBoard));
 
         return randomMove;
     }
