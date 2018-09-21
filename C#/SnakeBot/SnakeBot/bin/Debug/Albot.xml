@@ -29,34 +29,9 @@
             Sends command and then does a blocking receive for a response.
             </summary>
         </member>
-        <member name="M:Albot.AlbotConnection.RestartGame">
-            <summary>
-            Sends a command to restart the game.
-            </summary>
-        </member>
-        <member name="M:Albot.AlbotConnection.GameOver">
-            <summary>
-            Returns true if game is over, make sure to check this after receiving the state.
-            </summary>
-        </member>
-        <member name="M:Albot.AlbotConnection.GetWinner">
-            <summary>
-            Returns winner, 1 if you won, -1 if you lost, 0 if draw. Call this after GameOver() is true.
-            </summary>
-        </member>
         <member name="T:Albot.Connect4.Connect4Game">
             <summary>
             A high level Connect4 library which sets up the connection and provides basic logic.
-            </summary>
-        </member>
-        <member name="M:Albot.Connect4.Connect4Game.MakeMoveGetNextBoard(System.Int32)">
-            <summary>
-            Makes a move, then returns the next board. 
-            </summary>
-        </member>
-        <member name="M:Albot.Connect4.Connect4Game.GetNextBoard">
-            <summary>
-            Returns the next board.
             </summary>
         </member>
         <member name="M:Albot.Connect4.Connect4Game.SimulateMove(Albot.Connect4.Connect4Board,System.Int32,System.Int32)">
@@ -72,6 +47,32 @@
         <member name="T:Albot.BoardState">
             <summary>
             Whether game is over and if so, who the winner is.
+            </summary>
+        </member>
+        <member name="T:Albot.Game">
+            <summary>
+            Handles connection to the Albot client and provides general game functionality.
+            </summary>
+        </member>
+        <member name="F:Albot.Game.boardState">
+            <summary>
+            Whether game is over and if so, who the winner is.
+            </summary>
+        </member>
+        <member name="M:Albot.Game.AwaitNextGameState">
+            <summary>
+            Blocking receive call for next board and its state, both are stored locally as public variables. 
+            </summary>
+            <returns>The state of the board/game, check for ongoing if you want to see if game is over or not.</returns>
+        </member>
+        <member name="M:Albot.Game.RestartGame">
+            <summary>
+            Sends a command to restart the game.
+            </summary>
+        </member>
+        <member name="M:Albot.GridBased.GridBasedGame.RestartGame">
+            <summary>
+            Sends a command to restart the game.
             </summary>
         </member>
         <member name="M:Albot.GridBased.GridBasedGame.MakeMove(System.Int32)">
@@ -146,11 +147,6 @@
         <member name="M:Albot.Snake.SnakeGame.#ctor(System.String,System.Int32)">
             <summary>
             Initializes library and connects to the client.
-            </summary>
-        </member>
-        <member name="M:Albot.Snake.SnakeGame.GetNextBoard">
-            <summary>
-            Blocking receive call for next board. 
             </summary>
         </member>
         <member name="M:Albot.Snake.SnakeGame.MakeMove(System.String)">

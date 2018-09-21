@@ -13,7 +13,7 @@ namespace SnakeBot {
 
         static SnakeGame game;
         static Random rand = new Random();
-        static int maxDepth = 8;
+        static int maxDepth = 4;
         static int nodeCount = 0;
 
         const int WIDTH = SnakeConstants.Fields.boardWidth;
@@ -22,9 +22,12 @@ namespace SnakeBot {
         
 
         static void Main(string[] args) {
-            game = new SnakeGame();
+            Console.Write("Enter port: ");
+            int port = int.Parse(Console.ReadLine());
+
+            game = new SnakeGame("127.0.0.1", port);
             
-            game.PlayGame(DecideDirection, true);
+            game.PlayGame(DecideDirection, false);
 
             System.Environment.Exit(1);
         }
