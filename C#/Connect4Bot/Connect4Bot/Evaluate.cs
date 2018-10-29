@@ -150,22 +150,23 @@ namespace Connect4Bot {
                         amount++;
 
                     } else { // Two players have a piece in this seq of 4.
-                        amount = 0;
-                        break;
+                        //amount = 0;
+                        //break;
+                        return 0;
                     }
                 }
             }
 
-            if (amount == 1)
+            if (amount == 0)
+                return 0;
+            else if (amount == 1)
                 score = oneInRowScore;
             else if (amount == 2)
                 score = twoInRowScore;
             else if (amount == 3)
                 score = threeInRowScore;
-            else if (amount == 4)
+            else //if (amount == 4)
                 score = winScore;
-            else
-                score = 0;
 
             return score * intervalPlayer;
         }
