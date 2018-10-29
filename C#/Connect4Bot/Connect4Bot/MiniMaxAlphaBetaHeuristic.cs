@@ -34,9 +34,11 @@ namespace Connect4Bot {
                 moveBoardNodes.Add(new MoveBoardNode { move = move, boardNode = boardNode });
 
             }
+            
             moveBoardNodes = moveBoardNodes.OrderByDescending(x => x.boardNode.eval.score).ToList(); // player is maximizing
 
-            Console.WriteLine("\nMove scores {move, score}: ");
+            Console.WriteLine("\tMove scores {move, score}: ");
+            Console.Write("\t");
             List<MoveScore> results = new List<MoveScore>();
             foreach (MoveBoardNode moveBoardNode in moveBoardNodes) {
                 int searchScore = MiniMaxSearch(moveBoardNode.boardNode, MINIMIZING, 1, a, b);
@@ -45,18 +47,28 @@ namespace Connect4Bot {
                     break;
 
                 Console.Write("{" + moveBoardNode.move + ", " + searchScore + "} ,  ");
+                
                 results.Add(new MoveScore() { move = moveBoardNode.move, score = searchScore });
             }
-            
-            int decidedMove = DecideMove(results);
-            Console.WriteLine("Move chosen: " + decidedMove);
-            return decidedMove;
+            int maxScore = results.Max(x => x.score);
+            if (Math.Abs(maxScore) > 900) // Either confident in win or in loss, don't search deeper
+                MainClass.gameOutcomeFinal = true;
+            if(results.Count(x => x.score > -900) == 1) // Only 1 viable option, just do it!
+                MainClass.gameOutcomeFinal = true;
+            int bestMove = results.Find(x => x.score == maxScore).move;
+            //int decidedMove = DecideMove(results);
+            Console.WriteLine("\tBest move: " + bestMove);
+            Console.WriteLine("\tSimulations: " + Con4Board.simulations);
+            Con4Board.simulations = 0;
+            return bestMove;
 
         }
 
         // Returns best score found for current player
         private static int MiniMaxSearch(BoardNode currentNode, int player, int depth, int a, int b) {
-            
+            if (MainClass.timesUp)
+                return 0; // Will not be used as this whole iteration is aborted
+
             // End game if max depth reached or game is over
             if (depth == maxDepth || currentNode.eval.boardState != BoardState.ongoing)
                 return currentNode.eval.score;
@@ -125,6 +137,11 @@ namespace Connect4Bot {
 
         private struct BoardNode {
             public Con4Board board;
+            public Evaluation eval;
+        }
+
+        private struct MoveEval {
+            public int move;
             public Evaluation eval;
         }
 

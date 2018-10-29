@@ -12,8 +12,10 @@ using static Albot.Connect4.Connect4Constants.Fields;
 namespace Connect4Bot {
 
     public class Evaluate {
+        
         public const int winScore = 1000, oneInRowScore = 1, twoInRowScore = 10, threeInRowScore = 50;
         private static Random rand = new Random();
+
         internal static int EvaluateBoardSimple(BoardState boardState, int depth) {
             //depth = 0;
             int winScore = 10;
