@@ -12,75 +12,73 @@ using static Albot.Connect4.Connect4Constants.Fields;
 namespace Connect4Bot {
 
     public class Evaluate {
-        public const int winScore = 1000, twoInRowScore = 1, threeInRowScore = 3;
-
-        // Not sure if correct
-        internal static int EvaluateBoard(BoardState boardState, Connect4Board board, int depth) {
-            depth = 0;
+        public const int winScore = 1000, oneInRowScore = 1, twoInRowScore = 10, threeInRowScore = 50;
+        private static Random rand = new Random();
+        internal static int EvaluateBoardSimple(BoardState boardState, int depth) {
+            //depth = 0;
+            int winScore = 10;
             int score;
             if (boardState == BoardState.playerWon)
-                score = winScore - depth; // Win asap (or delay lose as much as possible)
+                score = winScore - depth; // Win asap (or delay loss as much as possible)
             else if (boardState == BoardState.enemyWon)
                 score = -winScore + depth;
             else if (boardState == BoardState.draw)
                 score = 0;
-            else //(boardState == BoardState.Ongoing)
+            else
                 score = 0;
 
             return score;
-
-            // return CalculateBoardScore(board); TO BE IMPLEMENTED
         }
         
-        private static Evaluation CalculateBoardScore(Connect4Board board) {
+        public static Evaluation CalculateBoardScore(Con4Board board, int depth) {
             int score = 0;
             BoardState bs = BoardState.ongoing;
             score += CalulateRowScores(board, ref bs);
             score += CalculateColumnScores(board, ref bs);
             score += CalculateDiagonalScores(board, ref bs);
             if (bs == BoardState.playerWon)
-                score = winScore;
+                score = winScore - depth;
             else if (bs == BoardState.enemyWon)
-                score = -winScore;
+                score = -winScore + depth;
             else if (IsDraw(board)) {
                 bs = BoardState.draw;
                 score = 0;
             }
-            return new Evaluation() { bs = bs, score = score };
+            return new Evaluation() { boardState = bs, score = score };
         }
 
-        private static bool IsDraw(Connect4Board board) {
+        private static bool IsDraw(Con4Board board) {
             for (int x = 0; x < boardWidth; x++)
-                if (board.GetCell(x, 0) == 0)
+                if (board.grid[x, 0] == 0)
                     return false;
             return true;
         }
 
-        private static int CalulateRowScores(Connect4Board board, ref BoardState bs) {
+        private static int CalulateRowScores(Con4Board board, ref BoardState bs) {
             int score = 0;
             for (int y = 0; y < boardHeight; y++) {
                 List<int> seq = new List<int>(boardWidth);
                 for (int x = 0; x < boardWidth; x++) {
-                    seq.Add(board.GetCell(x, y));
+                    seq.Add(board.grid[x, y]);
                 }
                 score += CalculateSequenceScore(seq, ref bs);
             }
             return score;
         }
 
-        private static int CalculateColumnScores(Connect4Board board, ref BoardState bs) {
+        private static int CalculateColumnScores(Con4Board board, ref BoardState bs) {
             int score = 0;
             for (int x = 0; x < boardWidth; x++) {
                 List<int> seq = new List<int>(boardHeight);
                 for (int y = 0; y < boardHeight; y++) {
-                    seq.Add(board.GetCell(x, y));
+                    seq.Add(board.grid[x, y]);
                 }
                 score += CalculateSequenceScore(seq, ref bs);
             }
             return score;
         }
 
-        private static int CalculateDiagonalScores(Connect4Board board, ref BoardState bs) {
+        private static int CalculateDiagonalScores(Con4Board board, ref BoardState bs) {
             int score = 0;
             List<int> seq;
 
@@ -111,11 +109,11 @@ namespace Connect4Bot {
             return score;
         }
 
-        private static List<int> GenerateDiagonalSequence(Connect4Board board, int x, int y, bool positiveSlope) {
+        private static List<int> GenerateDiagonalSequence(Con4Board board, int x, int y, bool positiveSlope) {
             
             List<int> seq = new List<int>();
             while (LegalPos(x, y)) {
-                seq.Add(board.GetCell(x, y));
+                seq.Add(board.grid[x, y]);
                 x++;
                 y += positiveSlope ? -1 : 1;
             }
@@ -158,7 +156,9 @@ namespace Connect4Bot {
                 }
             }
 
-            if (amount == 2)
+            if (amount == 1)
+                score = oneInRowScore;
+            else if (amount == 2)
                 score = twoInRowScore;
             else if (amount == 3)
                 score = threeInRowScore;
@@ -177,7 +177,7 @@ namespace Connect4Bot {
         }
 
         public struct Evaluation {
-            public BoardState bs;
+            public BoardState boardState;
             public int score;
         }
 

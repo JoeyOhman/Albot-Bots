@@ -8,7 +8,7 @@ using Albot;
 using Albot.Connect4;
 
 namespace Connect4Bot {
-    public class Search {
+    class MiniMaxVanilla {
 
         private static Random rand = new Random();
         private static Connect4Game connect4;
@@ -17,63 +17,48 @@ namespace Connect4Bot {
 
         // Calls minimax for each possible move and returns best move
         public static int FindBestMove(Connect4Game connect4, Connect4Board startBoard, int maxDepth) {
-            Search.maxDepth = maxDepth;
-            Search.connect4 = connect4;
+            MiniMaxVanilla.maxDepth = maxDepth;
+            MiniMaxVanilla.connect4 = connect4;
             int player = MAXIMIZING;
-            int a = int.MinValue;
-            int b = int.MaxValue;
-
 
             List<MoveScore> results = new List<MoveScore>();
-            //Console.Write("SearchScores: ");
+
+            Console.WriteLine("Move scores {move, score}: ");
             foreach (int move in connect4.GetPossibleMoves(startBoard)) {
                 Connect4Board nextBoard = connect4.SimulateMove(startBoard, player, move);
-                int searchScore = MinMaxSearch(nextBoard, player * -1, 1, a, b);
-                //a = Math.Max(a, searchScore);
+                int searchScore = MiniMaxSearch(nextBoard, player * -1, 1);
+                Console.Write("{" + move + ", " + searchScore + "} ,  ");
 
-                results.Add(new Search.MoveScore() { move = move, score = searchScore });
-                //Console.Write(searchScore + " ");
+                results.Add(new MoveScore() { move = move, score = searchScore });
             }
-            //Console.WriteLine();
-
-            return DecideMove(results);
+            int decidedMove = DecideMove(results);
+            Console.WriteLine("Move chosen: " + decidedMove);
+            return decidedMove;
 
         }
 
         // Returns best score found for current player
-        private static int MinMaxSearch(Connect4Board currentBoard, int player, int depth, int a, int b) {
+        private static int MiniMaxSearch(Connect4Board currentBoard, int player, int depth) {
 
             BoardState boardState = connect4.EvaluateBoard(currentBoard);
             // End game if max depth reached or game is over
-            if (depth == maxDepth || boardState != BoardState.ongoing) {
-                return Evaluate.EvaluateBoard(boardState, currentBoard, depth);
-            }
+            if (depth == maxDepth || boardState != BoardState.ongoing)
+                return Evaluate.EvaluateBoardSimple(boardState, depth);
 
             int searchScore = player == MAXIMIZING ? int.MinValue : int.MaxValue;
 
             foreach (int move in connect4.GetPossibleMoves(currentBoard)) {
                 Connect4Board nextBoard = connect4.SimulateMove(currentBoard, player, move);
-                
-                if (player == MAXIMIZING) {
-                    searchScore = Math.Max(searchScore, MinMaxSearch(nextBoard, MINIMIZING, depth + 1, a, b));
-                    a = Math.Max(a, searchScore);
-                    
-                    if (a >= b) // Minimizing parent will not choose this path, beta cutoff
-                        break;
-                        
-                } else {
-                    searchScore = Math.Min(searchScore, MinMaxSearch(nextBoard, MAXIMIZING, depth + 1, a, b));
-                    b = Math.Min(b, searchScore);
-                    
-                    if (b <= a) // Maximizing parent will not choose this path, alpha cutoff
-                        break;
-                        
-                }
+
+                if (player == MAXIMIZING)
+                    searchScore = Math.Max(searchScore, MiniMaxSearch(nextBoard, MINIMIZING, depth + 1));
+                else 
+                    searchScore = Math.Min(searchScore, MiniMaxSearch(nextBoard, MAXIMIZING, depth + 1));
             }
             return searchScore;
 
         }
-        
+
         private static int DecideMove(List<MoveScore> results) {
 
             for (int i = Evaluate.winScore; i >= -Evaluate.winScore; i--) {
@@ -81,7 +66,7 @@ namespace Connect4Bot {
                     continue;
 
                 List<MoveScore> possibleMoves = results.Where(res => res.score == i).ToList();
-                return possibleMoves[rand.Next(0, possibleMoves.Count - 1)].move;
+                return possibleMoves[rand.Next(possibleMoves.Count)].move;
                 //return possibleMoves[0].move;
             }
             Console.WriteLine("Should not happen.");

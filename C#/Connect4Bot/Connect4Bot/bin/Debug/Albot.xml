@@ -123,6 +123,12 @@
             The placements of the players contain their positions and directions.
             </summary>
         </member>
+        <member name="M:Albot.Snake.SnakeBoard.#ctor(Albot.Snake.SnakeBoard)">
+            <summary>
+            Constructor for SnakeBoard which makes a deep copy of the passed board.
+            </summary>
+            <param name="board">Board to be deep copied.</param>
+        </member>
         <member name="M:Albot.Snake.SnakeBoard.CellBlocked(System.Int32,System.Int32)">
             <summary>
             True if position is occupied, false if square is empty.
