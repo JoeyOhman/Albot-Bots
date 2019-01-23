@@ -16,7 +16,7 @@ namespace Connect4Bot {
         //static Random rnd = new Random();
 
         //const int depth = 11;
-        const int timeLimit = 100;//9300;
+        const int timeLimit = 20;//9300;
         public static bool timesUp = false, gameOutcomeFinal = false;
         static Thread t;
         static int averageDepth = 0; // Width full time searches only
