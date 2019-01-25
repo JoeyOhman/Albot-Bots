@@ -12,13 +12,14 @@ namespace Connect4BotMCTS {
 
         static void Main(string[] args) {
 
+            
             connect4.PlayGame(DecideMove, false);
 
         }
 
         private static int DecideMove(Connect4Board board) {
             Con4Board con4Board = new Con4Board(board);
-            return MCTS.FindMove(con4Board);
+            return MCTS.FindMove(con4Board, 9000);
         }
     }
 }

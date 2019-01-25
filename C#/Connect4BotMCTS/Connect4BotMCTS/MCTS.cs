@@ -4,23 +4,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Connect4BotMCTS {
     class MCTS {
 
+        //private const int simulationEvaluationLimit = 1200000;
+        private const double explorationConstant = 1000;
+
+        private static Stopwatch stopwatch = new Stopwatch();
         private static Random rnd = new Random();
         private static Node root;
+        private static int simulations = 0;
+        private static int evaluations = 0;
 
-        public static int FindMove(Con4Board board) {
+        public static int FindMove(Con4Board board, long searchTimeMs) {
+            simulations = 0;
+            evaluations = 0;
             root = new Node(null, board, 1, -1);
             List<int> possMoves = board.GetPossibleMoves();
-            foreach (int move in possMoves)
+            foreach (int move in possMoves) {
                 root.children.Add(new Node(root, board.SimulateMove(root.playerToMove, move),
                     root.playerToMove * -1, move));
+                simulations++;
+            }
 
-
-            for (int i = 0; i < 750; i++)
-                MCTSIteration();
+            stopwatch.Restart();
+            while(stopwatch.ElapsedMilliseconds < searchTimeMs) {
+                //stopwatch.Restart();
+                for(int i = 0; i < 100; i++)
+                    MCTSIteration();
+                //stopwatch.Stop();
+                //Console.WriteLine(stopwatch.ElapsedMilliseconds);
+                //searchTimeMs -= stopwatch.ElapsedMilliseconds;
+            }
 
             List<Node> children = root.children;
             int bestMove = children[0].previousMove;
@@ -37,6 +54,7 @@ namespace Connect4BotMCTS {
                 }
             }
             Console.WriteLine(" => Playing move: " + bestMove);
+            Console.WriteLine("Simulations: " + simulations + ", Evaluations: " + evaluations);
             return bestMove;
         }
 
@@ -69,7 +87,7 @@ namespace Connect4BotMCTS {
                 return double.MaxValue;
             
             double avgValue = (node.totalValue / node.totalVisits) * node.playerToMove;
-            double explorationValue = 1.4f * Math.Sqrt(Math.Log(root.totalVisits) / node.totalVisits);
+            double explorationValue = explorationConstant * Math.Sqrt(Math.Log(root.totalVisits) / node.totalVisits);
             return avgValue + explorationValue;
         }
 
@@ -79,16 +97,21 @@ namespace Connect4BotMCTS {
             } else {
                 // EXPAND
                 Con4Board board = leaf.state;
-                List<int> possMoves = board.GetPossibleMoves();
-                foreach(int move in possMoves)
-                    leaf.children.Add(new Node(leaf, board.SimulateMove(leaf.playerToMove, move), 
-                        leaf.playerToMove * -1));
-
-                // ERROR NÄR INGA CHILDREN FINNS, VAD GÖR MAN NÄR MAN ÄR I END GAME?
-                // HUR BELÖNAR MAN BENHÅRT NÄR EN VINST ÄR NÄRA? den explorear väl bortåt eftersom vi når end game???
-                if (leaf.children.Count == 0) {
-                    Backpropagate(leaf, BoardStateToValue(board.EvaluateBoard()));
-                } else {
+                //BoardState bs = board.EvaluateBoard();
+                //checkEqualityOfEval(board, bs);
+                //BoardState bs = Evaluate.EvaluateBoard(board);
+                BoardState bs = leaf.bs;
+                //evaluations++;
+                if (bs != BoardState.ongoing) { // Terminal node, do not expand, just backprop
+                    Backpropagate(leaf, BoardStateToValue(bs));
+                } else { // Not terminal, expand
+                    List<int> possMoves = board.GetPossibleMoves();
+                    foreach (int move in possMoves) {
+                        leaf.children.Add(new Node(leaf, board.SimulateMove(leaf.playerToMove, move),
+                            leaf.playerToMove * -1));
+                        simulations++;
+                    }
+                    
                     Node firstChild = leaf.children[0];
                     MCRollout(firstChild);
                 }
@@ -99,14 +122,20 @@ namespace Connect4BotMCTS {
             Con4Board board = leaf.state;
             int player = leaf.playerToMove;
             int value = 0;
-            while(true) {
-                BoardState bs = board.EvaluateBoard();
+            BoardState bs = leaf.bs;
+            while (true) {
+                //BoardState bs = board.EvaluateBoard();
+                //checkEqualityOfEval(board, bs);
+                
                 if (bs != BoardState.ongoing) {
                     value = BoardStateToValue(bs);
                     break;
                 } else {
                     List<int> possMoves = board.GetPossibleMoves();
                     board = board.SimulateMove(player, possMoves[rnd.Next(possMoves.Count)]);
+                    simulations++;
+                    bs = Evaluate.EvaluateBoard(board);
+                    evaluations++;
                     player *= -1;
                 }
             }
@@ -130,6 +159,17 @@ namespace Connect4BotMCTS {
 
         }
 
+        private static void checkEqualityOfEval(Con4Board board, BoardState bs) {
+            BoardState localBs = Evaluate.EvaluateBoard(board);
+            if (bs != localBs) {
+                Albot.Connect4.Connect4Board albotBoard = new Albot.Connect4.Connect4Board(board.grid);
+                albotBoard.PrintBoard("Board which gave error:");
+                Console.WriteLine("Albot implementation evaluates to: " + bs.ToString() + "\n" +
+                    "Local implementation evaluates to: " + localBs.ToString());
+                throw new Exception("LOCAL EVALUATION NOT SAME AS ALBOTS!");
+            }
+        }
+
         class Node {
             public double totalValue = 0;
             public double totalVisits = 0;
@@ -138,17 +178,20 @@ namespace Connect4BotMCTS {
             public Node parent;
             public List<Node> children = new List<Node>();
             public Con4Board state;
+            public BoardState bs;
 
             public Node(Node parent, Con4Board state, int playerToMove) {
                 this.parent = parent;
                 this.state = state;
                 this.playerToMove = playerToMove;
+                this.bs = Evaluate.EvaluateBoard(state);
             }
             public Node(Node parent, Con4Board state, int playerToMove, int previousMove) {
                 this.parent = parent;
                 this.state = state;
                 this.playerToMove = playerToMove;
                 this.previousMove = previousMove;
+                this.bs = Evaluate.EvaluateBoard(state);
             }
         }
     }
