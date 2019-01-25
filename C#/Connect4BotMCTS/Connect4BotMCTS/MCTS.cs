@@ -19,7 +19,7 @@ namespace Connect4BotMCTS {
                     root.playerToMove * -1, move));
 
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 750; i++)
                 MCTSIteration();
 
             List<Node> children = root.children;
@@ -69,7 +69,7 @@ namespace Connect4BotMCTS {
                 return double.MaxValue;
             
             double avgValue = (node.totalValue / node.totalVisits) * node.playerToMove;
-            double explorationValue = 2 * Math.Sqrt(Math.Log(root.totalVisits) / node.totalVisits);
+            double explorationValue = 1.4f * Math.Sqrt(Math.Log(root.totalVisits) / node.totalVisits);
             return avgValue + explorationValue;
         }
 
@@ -85,9 +85,13 @@ namespace Connect4BotMCTS {
                         leaf.playerToMove * -1));
 
                 // ERROR NÄR INGA CHILDREN FINNS, VAD GÖR MAN NÄR MAN ÄR I END GAME?
-                // 
-                Node firstChild = leaf.children[0]; 
-                MCRollout(firstChild);
+                // HUR BELÖNAR MAN BENHÅRT NÄR EN VINST ÄR NÄRA? den explorear väl bortåt eftersom vi når end game???
+                if (leaf.children.Count == 0) {
+                    Backpropagate(leaf, BoardStateToValue(board.EvaluateBoard()));
+                } else {
+                    Node firstChild = leaf.children[0];
+                    MCRollout(firstChild);
+                }
             }
         }
 
@@ -98,9 +102,7 @@ namespace Connect4BotMCTS {
             while(true) {
                 BoardState bs = board.EvaluateBoard();
                 if (bs != BoardState.ongoing) {
-                    if (bs == BoardState.draw) value = 0;
-                    else if (bs == BoardState.playerWon) value = 10;
-                    else value = -10;
+                    value = BoardStateToValue(bs);
                     break;
                 } else {
                     List<int> possMoves = board.GetPossibleMoves();
@@ -109,6 +111,13 @@ namespace Connect4BotMCTS {
                 }
             }
             Backpropagate(leaf, value);
+        }
+
+        private static int BoardStateToValue(BoardState bs) {
+            if (bs == BoardState.draw) return 0;
+            else if (bs == BoardState.playerWon) return 1;
+            else if (bs == BoardState.enemyWon) return -1;
+            else throw new Exception("Trying to get score of non-finished game.");
         }
 
         private static void Backpropagate(Node node, int value) {

@@ -12,7 +12,7 @@ namespace Connect4BotMCTS {
 
         static void Main(string[] args) {
 
-            connect4.PlayGame(DecideMove, true);
+            connect4.PlayGame(DecideMove, false);
 
         }
 
