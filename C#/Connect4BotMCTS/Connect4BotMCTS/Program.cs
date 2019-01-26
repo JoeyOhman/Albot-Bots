@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Connect4BotMCTS {
     class Program {
 
-        public static Connect4Game connect4 = new Connect4Game(); // Handles connection to Albot
+        public static Connect4Game connect4 = new Connect4Game("127.0.0.1", 4000);
 
         static void Main(string[] args) {
 

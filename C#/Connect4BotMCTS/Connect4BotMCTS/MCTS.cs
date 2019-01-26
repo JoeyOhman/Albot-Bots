@@ -21,12 +21,27 @@ namespace Connect4BotMCTS {
         public static int FindMove(Con4Board board, long searchTimeMs) {
             simulations = 0;
             evaluations = 0;
-            root = new Node(null, board, 1, -1);
-            List<int> possMoves = board.GetPossibleMoves();
-            foreach (int move in possMoves) {
-                root.children.Add(new Node(root, board.SimulateMove(root.playerToMove, move),
-                    root.playerToMove * -1, move));
-                simulations++;
+            if (root == null) {
+                // New tree
+                root = new Node(null, board, 1, -1);
+                List<int> possMoves = board.GetPossibleMoves();
+                foreach (int move in possMoves) {
+                    root.children.Add(new Node(root, board.SimulateMove(root.playerToMove, move),
+                        root.playerToMove * -1, move));
+                    simulations++;
+                }
+            } else {
+                // Continue from last tree
+                // Set root to child which matches opponents move
+                foreach(Node node in root.children) {
+                    if(node.state.Equals(board)) {
+                        root = node;
+                        root.parent = null; // Let GC remove rest of tree
+                        Console.WriteLine("Found root, continuing where we left off!");
+                        break;
+                    }
+
+                }
             }
 
             stopwatch.Restart();
@@ -42,6 +57,7 @@ namespace Connect4BotMCTS {
             List<Node> children = root.children;
             int bestMove = children[0].previousMove;
             double bestValue = children[0].totalValue;
+            Node nextRoot = children[0]; // To continue on same tree next move
             Console.Write("Move values {m, v}: ");
             Console.Write("{" + children[0].previousMove + ", " + children[0].totalValue + "} ");
             for (int i = 1; i < children.Count; i++) {
@@ -51,10 +67,12 @@ namespace Connect4BotMCTS {
                 if(totVal > bestValue) {
                     bestValue = totVal;
                     bestMove = child.previousMove;
+                    nextRoot = child;
                 }
             }
             Console.WriteLine(" => Playing move: " + bestMove);
             Console.WriteLine("Simulations: " + simulations + ", Evaluations: " + evaluations);
+            root = nextRoot;
             return bestMove;
         }
 
@@ -108,7 +126,7 @@ namespace Connect4BotMCTS {
                     List<int> possMoves = board.GetPossibleMoves();
                     foreach (int move in possMoves) {
                         leaf.children.Add(new Node(leaf, board.SimulateMove(leaf.playerToMove, move),
-                            leaf.playerToMove * -1));
+                            leaf.playerToMove * -1, move));
                         simulations++;
                     }
                     
@@ -180,12 +198,12 @@ namespace Connect4BotMCTS {
             public Con4Board state;
             public BoardState bs;
 
-            public Node(Node parent, Con4Board state, int playerToMove) {
+            /*public Node(Node parent, Con4Board state, int playerToMove) {
                 this.parent = parent;
                 this.state = state;
                 this.playerToMove = playerToMove;
                 this.bs = Evaluate.EvaluateBoard(state);
-            }
+            }*/
             public Node(Node parent, Con4Board state, int playerToMove, int previousMove) {
                 this.parent = parent;
                 this.state = state;
